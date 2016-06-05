@@ -1,0 +1,6 @@
+{
+  "instance": "myinstance.service-now.com",
+  "username": "myuser",
+  "password": "mypass",
+  "retry_value": 20
+}
