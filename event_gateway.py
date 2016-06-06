@@ -7,7 +7,7 @@ db = client.test
 
 
 @app.route('/api/v1/event', methods=['POST'])
-def hello_world():
+def event_gateway():
     req_dict = request.get_json()
     # em_event_status will be an indexed field that workers use to send data to ServiceNow
     # 0 = unsent, 1 = sent
