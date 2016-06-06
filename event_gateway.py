@@ -30,8 +30,8 @@ def index():
     return jsonify(status='healthy')
 
 
-@app.route('/api/{api_version}/event'.format(api_version=api_version), methods=['GET'])
-def event_gateway_status():
+@app.route('/api/{api_version}/event_detail'.format(api_version=api_version), methods=['GET'])
+def event_gateway_status_detail():
     events = {'events_to_be_processed': [], 'events_processed': []}
     for document in db.events.find({'em_event_status': 0}):
         del document['em_event_status']
@@ -42,6 +42,21 @@ def event_gateway_status():
         del document['em_event_status']
         del document['_id']
         events['events_processed'].append(document)
+
+    return jsonify(events)
+
+
+@app.route('/api/{api_version}/event'.format(api_version=api_version), methods=['GET'])
+def event_gateway_status():
+    events = {'events_to_be_processed': [], 'events_processed': []}
+    events_to_process = db.events.find({'em_event_status': 0}).count()
+    if events_to_process == 0:
+        events['events_to_be_processed'] = 0
+    else:
+        events['events_to_be_processed'] = events_to_process
+
+    for document in db.events.find({'em_event_status': 1}):
+        events['events_processed'] = len(document)
 
     return jsonify(events)
 
